@@ -1443,7 +1443,7 @@ Quiet client #1568
 
 - #1490: @vijayviji Add windows-specific vagrant setup
 - #1563: @kdomanski Cleanup all dead containers in dokku cleanup
-- #1590: @michaelshobbs Trigger docker-args-build for dockerfile deployments
+- #1590: @michaelshobbs Trigger  for dockerfile deployments
 - #1600: @josegonzalez Upgrade to Herokuish 0.3.4
 - #1602: @josegonzalez Add pre-receive-app plugin trigger
 

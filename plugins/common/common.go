@@ -337,6 +337,34 @@ func VerifyAppName(appName string) (err error) {
 	return err
 }
 
+//RemoveBlankLines removes blank lines from a string of text
+func RemoveBlankLines(txt string) string {
+	r := regexp.MustCompile(`(?m)^\s*$[\r\n]*|[\r\n]+\s+\z`)
+	out := r.ReplaceAllString(txt, "")
+	return out
+}
+
+//RemoveNewLines replaces all new line characters from a string and replaces them with spaces
+func RemoveNewLines(txt string) string {
+	r := regexp.MustCompile(`\r\n`)
+	out := r.ReplaceAllString(txt, " ")
+	return out
+}
+
+//FormatFlagString transforms a flag ("--docker-options-build") into a heading ("Docker Options Build:")
+func FormatFlagString(txt string) string {
+	out := strings.Replace(txt, "--", "", 1)
+	out = strings.Replace(out, "-", " ", 5)
+	out = strings.Title(out) + ":"
+	return out
+}
+
+//IsOption returns true if a string matches GNU long option format ('--*')
+func IsOption(txt string) bool {
+	r := regexp.MustCompile(`^(-){2}.*$`)
+	return r.MatchString(txt)
+}
+
 // VerifyImage returns true if docker image exists in local repo
 func VerifyImage(image string) bool {
 	imageCmd := NewShellCmd(strings.Join([]string{"docker inspect", image}, " "))

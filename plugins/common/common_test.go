@@ -10,14 +10,21 @@ import (
 )
 
 var (
-	testAppName = "test-app-1"
-	testAppDir  = strings.Join([]string{"/home/dokku/", testAppName}, "")
-	testEnvFile = strings.Join([]string{testAppDir, "/ENV"}, "")
-	testEnvLine = "export testKey=TESTING"
-	testAppName2 = "01-test-app-1"
-	testAppDir2  = strings.Join([]string{"/home/dokku/", testAppName2}, "")
-	testEnvFile2 = strings.Join([]string{testAppDir2, "/ENV"}, "")
-	testEnvLine2 = "export testKey=TESTING"
+	testAppName        = "test-app-1"
+	testAppDir         = strings.Join([]string{"/home/dokku/", testAppName}, "")
+	testEnvFile        = strings.Join([]string{testAppDir, "/ENV"}, "")
+	testEnvLine        = "export testKey=TESTING"
+	testAppName2       = "01-test-app-1"
+	testAppDir2        = strings.Join([]string{"/home/dokku/", testAppName2}, "")
+	testEnvFile2       = strings.Join([]string{testAppDir2, "/ENV"}, "")
+	testEnvLine2       = "export testKey=TESTING"
+	testBlankLinesStr  = "test1\r\n\r\ntest2\r\n\r\ntest3"
+	testBlankLinesComp = "test1\r\ntest2\r\ntest3"
+	testNewLinesComp   = "test1  test2  test3"
+	testFormatFlag     = "--docker-flag-test"
+	testFormattedFlag  = "Docker Flag Test:"
+	testGoodOption     = "--docker-good-option"
+	testBadOption      = "-docker-bad-option"
 )
 
 func setupTestApp() (err error) {
@@ -125,4 +132,33 @@ func TestCommonStripInlineComments(t *testing.T) {
 	RegisterTestingT(t)
 	text := StripInlineComments(strings.Join([]string{testEnvLine, "# testing comment"}, " "))
 	Expect(text).To(Equal(testEnvLine))
+}
+
+func TestCommonRemoveBlankLines(t *testing.T) {
+	RegisterTestingT(t)
+	text := RemoveBlankLines(testBlankLinesStr)
+	compare := testBlankLinesComp
+	Expect(text).To(Equal(compare))
+}
+
+func TestCommonRemoveNewLines(t *testing.T) {
+	RegisterTestingT(t)
+	text := RemoveNewLines(testBlankLinesStr)
+	compare := testNewLinesComp
+	Expect(text).To(Equal(compare))
+}
+
+func TestFormatFlagString(t *testing.T) {
+	RegisterTestingT(t)
+	text := FormatFlagString(testFormatFlag)
+	compare := testFormattedFlag
+	Expect(text).To(Equal(compare))
+}
+
+func TestIsOption(t *testing.T) {
+	RegisterTestingT(t)
+	res := IsOption(testGoodOption)
+	res2 := IsOption(testBadOption)
+	Expect(res).To(BeTrue())
+	Expect(res2).To(BeFalse())
 }
